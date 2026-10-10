@@ -1,0 +1,64 @@
+---
+import Button from '@/components/ui/Button.astro';
+import Orbit from './Orbit.astro';
+import type { HeroContent } from '@/types/site';
+
+interface Props {
+  content: HeroContent;
+}
+
+const { nameLines, intro, actions, portrait } = Astro.props.content;
+---
+<section class="wrap hero">
+  <div class="hero__text stack" style={{ '--stack-gap': '28px' }}>
+    <h1 class="display hero__name">
+      {nameLines.map((line, i) => (
+        <span class:list={['hero__line', { 'hero__line--accent': i === nameLines.length - 1 }]}>
+          <span>{line}</span>
+        </span>
+      ))}
+    </h1>
+    <p class="hero__intro muted" data-reveal>{intro}</p>
+    <div class="cluster" data-reveal>
+      {actions.map(({ label, href, variant, external }) => (
+        <Button href={href} variant={variant} external={external}>{label}</Button>
+      ))}
+    </div>
+  </div>
+  <Orbit portrait={portrait} />
+</section>
+
+<style>
+  .hero {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 48px 40px;
+    padding-block: clamp(24px, 5vw, 56px) clamp(56px, 8vw, 96px);
+  }
+  /* A size container, so the name can be sized against the column's own width */
+  .hero__text { flex: 3 1 560px; min-width: 0; container-type: inline-size; }
+  /* Never wider than the column: "MATTHEW" is ~3.9em wide, so 24cqi leaves room to spare */
+  .hero__name { font-size: min(var(--fs-hero), 24cqi); letter-spacing: -.01em; }
+  /* Clip only vertically (masks the slide-up); glyphs like W may overhang sideways */
+  .hero__line { display: block; overflow: visible clip; padding-bottom: .02em; }
+  .hero__line > span { display: inline-block; }
+  .hero__line--accent > span { color: var(--accent); }
+  .hero__intro { margin: 0; max-width: 580px; font-size: var(--fs-intro); }
+
+  /* Start state for the entrance animation (only while .js-reveal is set; see BaseLayout) */
+  :global(.js-reveal) .hero__line > span { transform: translateY(105%); }
+  :global(.js-reveal) [data-reveal] { opacity: 0; transform: translateY(20px); }
+
+  /* Phones: buttons share the row evenly */
+  @media (max-width: 480px) {
+    .hero__text .cluster > :global(.btn) { flex: 1 1 auto; }
+  }
+</style>
+
+<script>
+  import { animate, stagger } from 'motion';
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Name slides up line by line, then the intro and buttons fade in.
+    animate('.hero__line > span', { y: ['105%', '0%'] }, { duration: 1, delay: stagger(0.12), ease: [0.2, 0.9, 0.2, 1] });
+    animate('[data-reveal]', { opacity: [0, 1], y: [20, 0] }, { duration: 0.9, delay: stagger(0.12, { startDelay: 0.3 }) });
+  }
+</script>

@@ -1,0 +1,29 @@
+---
+import Section from '@/components/ui/Section.astro';
+import ChipList from '@/components/ui/ChipList.astro';
+import type { AboutContent } from '@/types/site';
+
+interface Props {
+  content: AboutContent;
+}
+
+const { lead, body, skills } = Astro.props.content;
+---
+<Section id="about">
+  <div class="about">
+    <h2 class="display h2">About</h2>
+    <div class="about__body stack" style={{ '--stack-gap': '20px' }}>
+      <p class="about__lead">{lead}</p>
+      <p class="muted">{body}</p>
+      <ChipList items={skills} aria-label="Skills" />
+    </div>
+  </div>
+</Section>
+
+<style>
+  .about { display: flex; flex-wrap: wrap; gap: 32px 72px; }
+  .about > h2 { flex: 1 1 260px; }
+  .about__body { flex: 2 1 480px; min-width: 0; }
+  .about__body p { margin: 0; }
+  .about__lead { font-size: var(--fs-lead); line-height: 1.35; font-weight: 500; }
+</style>

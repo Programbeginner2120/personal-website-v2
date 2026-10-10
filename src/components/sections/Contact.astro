@@ -1,0 +1,48 @@
+---
+import Section from '@/components/ui/Section.astro';
+import Button from '@/components/ui/Button.astro';
+import SiteFooter from './SiteFooter.astro';
+import type { ContactContent } from '@/types/site';
+
+interface Props {
+  content: ContactContent;
+  name: string;
+  domain: string;
+}
+
+const { content, name, domain } = Astro.props;
+---
+<Section id="contact" class="contact">
+  <div class="contact__card stack" style={{ '--stack-gap': '28px' }}>
+    <h2 class="display contact__title">{content.heading}</h2>
+    <div class="cluster">
+      {content.links.map(({ label, href, variant, external }) => {
+        // On narrow screens, let an email address wrap before the "@" rather than mid-word.
+        const [user, domain] = label.split('@');
+        return (
+          <Button href={href} variant={variant} external={external}>
+            {domain ? <>{user}<wbr />@{domain}</> : label}
+          </Button>
+        );
+      })}
+    </div>
+  </div>
+  <SiteFooter name={name} domain={domain} />
+</Section>
+
+<style>
+  .contact { padding-bottom: 48px; }
+  .contact__card {
+    /* Every outline button inside the card gets a dark border. This inherits into Button. */
+    --btn-border: var(--bg);
+    background: var(--accent); color: var(--bg);
+    border-radius: var(--radius-lg);
+    padding: clamp(28px, 6vw, 72px);
+  }
+  .contact__title { font-size: var(--fs-contact); }
+
+  /* Phones: full-width stacked buttons are easier to tap */
+  @media (max-width: 480px) {
+    .contact__card .cluster { flex-direction: column; }
+  }
+</style>

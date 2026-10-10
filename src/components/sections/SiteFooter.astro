@@ -1,0 +1,17 @@
+---
+interface Props {
+  name: string;
+  domain: string;
+}
+
+const { name, domain } = Astro.props;
+const year = new Date().getFullYear(); // evaluated at BUILD time, so rebuild yearly
+---
+<footer class="footer label muted">
+  <span>© {year} {name}</span>
+  <span>{domain}</span>
+</footer>
+
+<style>
+  .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-top: 28px; font-size: 13px; }
+</style>

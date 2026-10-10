@@ -1,0 +1,48 @@
+---
+import Section from '@/components/ui/Section.astro';
+import PoolTable from './PoolTable.astro';
+import PhotoCard from './PhotoCard.astro';
+import type { LifeContent } from '@/types/site';
+
+interface Props {
+  content: LifeContent;
+}
+
+const { heading, intro, photos } = Astro.props.content;
+const headingLines = heading.split('\n');
+---
+<Section id="life" class="stack" style={{ '--stack-gap': '32px' }}>
+  <div class="life__head">
+    <h2 class="display h2">
+      {headingLines.map((line, i) => <>{i > 0 && <br />}{line}</>)}
+    </h2>
+    <p class="muted">{intro}</p>
+  </div>
+
+  <PoolTable />
+
+  <div class="photos" role="list">
+    {photos.map((photo) => (
+      <div class="photos__item" role="listitem"><PhotoCard photo={photo} /></div>
+    ))}
+  </div>
+</Section>
+
+<style>
+  .life__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; }
+  .life__head p { margin: 0; max-width: 420px; }
+
+  /* Phones: one photo per row, stacked in a column */
+  .photos { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .photos__item { min-width: 0; }
+
+  /* Tablet: two by two */
+  @media (min-width: 720px) {
+    .photos { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Wide screens: all four in one row */
+  @media (min-width: 1100px) {
+    .photos { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>

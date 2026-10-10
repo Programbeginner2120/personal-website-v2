@@ -1,0 +1,17 @@
+---
+import Section from '@/components/ui/Section.astro';
+import JobCard from './JobCard.astro';
+import type { Job } from '@/types/site';
+
+interface Props {
+  jobs: Job[];
+}
+
+const { jobs } = Astro.props;
+---
+<Section id="experience" class="stack">
+  <h2 class="display h2">Experience</h2>
+  <div>
+    {jobs.map((job) => <JobCard job={job} />)}
+  </div>
+</Section>

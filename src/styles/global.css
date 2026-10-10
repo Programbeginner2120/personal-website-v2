@@ -1,0 +1,150 @@
+/* src/styles/global.css
+ * Imported once by BaseLayout. Everything lives in a cascade layer, so a
+ * component's scoped <style> (unlayered) always wins over these defaults.
+ */
+@import './tokens.css';
+
+/* Order matters: later layers win over earlier ones. */
+@layer reset, base, utilities;
+
+/* ---------- reset ---------- */
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  img, svg { display: block; max-width: 100%; }
+  /* The spinning orbit pokes past the edge on phones; clip it instead of scrolling */
+  html, body { overflow-x: clip; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+}
+
+/* ---------- base (element defaults) ---------- */
+@layer base {
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  /* Only dim on hover where hovering exists (not on touch screens) */
+  @media (hover: hover) {
+    a:hover { opacity: .8; }
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  /* Anchor targets land below the top edge, not flush against it */
+  [id] { scroll-margin-top: 24px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
+  /* Respect visitors who ask for less motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; }
+  }
+}
+
+/* ---------- utilities (reusable classes) ---------- */
+@layer utilities {
+  /* Layout */
+  .wrap    { width: 100%; max-width: var(--max-width); margin-inline: auto; padding-inline: var(--gutter); }
+  .section { padding-top: var(--section-gap); }
+  .stack   { display: flex; flex-direction: column; gap: var(--stack-gap, 24px); }
+  .cluster { display: flex; flex-wrap: wrap; gap: var(--cluster-gap, 12px); }
+
+  /* Typography */
+  .display {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: .85;
+  }
+  .h2    { font-size: var(--fs-h2); }
+  .muted { color: var(--muted); }
+  .label {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--fs-label);
+  }
+  .label--caps { text-transform: uppercase; letter-spacing: .06em; }
+
+  /* Buttons. Colours come from custom properties so a parent can
+     re-theme every button inside it (see Contact). */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px; /* comfortable touch target */
+    padding: 12px 26px;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    text-align: center;
+    overflow-wrap: break-word;
+    color: var(--btn-fg, inherit);
+    background: var(--btn-bg, transparent);
+    border: var(--border-width) solid var(--btn-border, var(--fg));
+    transition: transform .2s var(--ease-out-strong), opacity .2s;
+  }
+  @media (hover: hover) {
+    .btn:hover { opacity: 1; transform: translateY(-2px); }
+  }
+  .btn:active { transform: translateY(0) scale(.98); }
+  .btn--primary { --btn-bg: var(--accent); --btn-fg: var(--bg); --btn-border: var(--accent); }
+  .btn--solid   { --btn-bg: var(--bg);     --btn-fg: var(--fg); --btn-border: var(--bg); }
+
+  /* Placeholder boxes while photos are missing */
+  .placeholder {
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    text-align: center;
+    color: var(--muted); font-size: 15px;
+    border: var(--border-width) dashed var(--line);
+  }
+
+  /* A photo filling a clipping frame (parent needs overflow: hidden).
+     --x / --y pick which part stays in view (0% = left/top, 100% = right/bottom);
+     --zoom crops in towards that same point. Set them with framingStyle() in src/lib/framing.ts. */
+  .framed-img {
+    display: block;
+    width: calc(100% * var(--zoom, 1));
+    height: calc(100% * var(--zoom, 1));
+    max-width: none;
+    object-fit: cover;
+    object-position: var(--x, 50%) var(--y, 50%);
+    /* Slide the enlarged image so the chosen point stays in view
+       (translate % is relative to the image's own, zoomed size) */
+    translate:
+      calc(var(--x, 50%) * (1 - var(--zoom, 1)) / var(--zoom, 1))
+      calc(var(--y, 50%) * (1 - var(--zoom, 1)) / var(--zoom, 1));
+  }
+
+  /* Hidden visually, still read by screen readers */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* "Skip to content" link: invisible until focused with the keyboard */
+  .skip-link {
+    position: absolute; left: var(--gutter); top: 12px; z-index: 100;
+    padding: 10px 16px; border-radius: var(--radius-sm);
+    background: var(--accent); color: var(--bg); font-weight: 700;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus { transform: none; }
+}

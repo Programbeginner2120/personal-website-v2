@@ -314,7 +314,9 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
-      name: 'Big Shoulders Display',
+      // Google merged "Big Shoulders Display" into "Big Shoulders" (optical-size axis).
+      // The old name fails in Astro's provider (found during implementation).
+      name: 'Big Shoulders',
       cssVariable: '--font-display',
       weights: [700, 900],
       styles: ['normal'],
@@ -1508,57 +1510,57 @@ Sitemap: https://matthewrkilleen.com/sitemap-index.xml
 ## 13. Enumerated task checklist
 
 ### Phase 0: Setup
-1. [ ] `npm install -D @astrojs/check typescript`
-2. [ ] Add scripts to `package.json`: `"check": "astro check"` and change `"build"` to `"astro check && astro build"`, so type errors fail the build.
-3. [ ] Rename `astro.config.mjs` → `astro.config.ts`; add `site` (§3.4).
-4. [ ] `npx astro add sitemap`, then add the `/styleguide` filter (§3.4, §12.4).
-5. [ ] Add the `@/*` path alias to `tsconfig.json` (§6.1).
-6. [ ] Delete `src/components/Welcome.astro`, `src/layouts/Layout.astro`, `src/assets/astro.svg`, `src/assets/background.svg`.
+1. [x] `npm install -D @astrojs/check typescript`
+2. [x] Add scripts to `package.json`: `"check": "astro check"` and change `"build"` to `"astro check && astro build"`, so type errors fail the build.
+3. [x] Rename `astro.config.mjs` → `astro.config.ts`; add `site` (§3.4).
+4. [x] `npx astro add sitemap`, then add the `/styleguide` filter (§3.4, §12.4).
+5. [x] Add the `@/*` path alias to `tsconfig.json` (§6.1).
+6. [x] Delete `src/components/Welcome.astro`, `src/layouts/Layout.astro`, `src/assets/astro.svg`, `src/assets/background.svg`.
 7. [ ] Create the empty GitHub repo `personal-website-v2`, push, and import it as a new Netlify project (§12.5 A, steps 1–3). From here on, every push deploys to the `*.netlify.app` URL.
 8. [ ] Commit `netlify.toml` (§12.3).
 
 ### Phase 1: Style guide
-9. [ ] Create `src/styles/tokens.css` (§3.2).
-10. [ ] Create `src/styles/global.css` with layers and utilities (§3.3).
-11. [ ] Configure the three fonts in `astro.config.ts` (§3.4).
+9. [x] Create `src/styles/tokens.css` (§3.2).
+10. [x] Create `src/styles/global.css` with layers and utilities (§3.3).
+11. [x] Configure the three fonts in `astro.config.ts` (§3.4).
 
 ### Phase 2–3: Types and data
-12. [ ] Create `src/types/site.ts` (§4).
-13. [ ] Create `src/data/site.ts`, `profile.ts`, `experience.ts`, `life.ts`, `contact.ts` (§5.3).
+12. [x] Create `src/types/site.ts` (§4).
+13. [x] Create `src/data/site.ts`, `profile.ts`, `experience.ts`, `life.ts`, `contact.ts` (§5.3).
 14. [ ] Fill in the `[Year]` / `[Your title]` placeholders for JPMorgan Chase.
 
 ### Phase 4: Primitives
-15. [ ] `src/lib/format.ts` (§6.2)
-16. [ ] `Button`, `ChipList`, `Placeholder`, `Section` in `src/components/ui/` (§6.4–6.7)
+15. [x] `src/lib/format.ts` (§6.2)
+16. [x] `Button`, `ChipList`, `Placeholder`, `Section` in `src/components/ui/` (§6.4–6.7)
 
 ### Phase 5: Layout
-17. [ ] `src/layouts/BaseLayout.astro` (§7)
-18. [ ] `src/pages/styleguide.astro` (§3.5). Check it in both themes.
+17. [x] `src/layouts/BaseLayout.astro` (§7)
+18. [x] `src/pages/styleguide.astro` (§3.5). Check it in both themes.
 
 ### Phase 6–7: Sections and motion
-19. [ ] `SiteHeader` (§8.1)
-20. [ ] `Hero` + `Orbit` (§8.2), including the hero Motion script
-21. [ ] `Ticker` (§8.3)
-22. [ ] `About` (§8.4)
-23. [ ] `JobCard` + `Experience` (§8.5)
-24. [ ] `PoolTable` (§8.6), including the `inView` script
-25. [ ] `PhotoCard` + `OffTheClock` (§8.7)
-26. [ ] `Contact` + `SiteFooter` (§8.8)
+19. [x] `SiteHeader` (§8.1)
+20. [x] `Hero` + `Orbit` (§8.2), including the hero Motion script
+21. [x] `Ticker` (§8.3)
+22. [x] `About` (§8.4)
+23. [x] `JobCard` + `Experience` (§8.5)
+24. [x] `PoolTable` (§8.6), including the `inView` script
+25. [x] `PhotoCard` + `OffTheClock` (§8.7)
+26. [x] `Contact` + `SiteFooter` (§8.8)
 
 ### Phase 8: Pages and static files
-27. [ ] Rewrite `src/pages/index.astro` (§10).
-28. [ ] Create `src/pages/404.astro` and `public/robots.txt` (§12.4).
+27. [x] Rewrite `src/pages/index.astro` (§10).
+28. [x] Create `src/pages/404.astro` and `public/robots.txt` (§12.4).
 29. [ ] Add real photos, and copy v1's résumé to `public/resume.pdf` (§11).
 
 ### Phase 9: Verify
-30. [ ] `astro dev --background`, then compare the page side by side with `prototypes/bold-template.html` at 375px, 768px and 1440px widths. (Stop the server with `astro dev stop`.)
-31. [ ] `npm run check` reports **0 errors, 0 warnings**.
+30. [x] `astro dev --background`, then compare the page side by side with `prototypes/bold-template.html` at 375px, 768px and 1440px widths. (Stop the server with `astro dev stop`.)
+31. [x] `npm run check` reports **0 errors, 0 warnings**.
 32. [ ] `npm run build && npm run preview`. The production build matches dev.
-33. [ ] With **reduced motion** turned on in the OS, nothing animates and all content is visible.
-34. [ ] No horizontal scroll at 320px width (the orbit is clipped).
+33. [x] With **reduced motion** turned on in the OS, nothing animates and all content is visible.
+34. [x] No horizontal scroll at 320px width (the orbit is clipped).
 35. [ ] Keyboard: Tab through the nav and buttons, and focus is visible on every link.
 36. [ ] Lighthouse run on the **`*.netlify.app` deploy**: aim for ≥ 95 on Performance, Accessibility, Best Practices and SEO.
-37. [ ] Check the built HTML (`dist/index.html`): all personal content is present as text, and the only JS is the Motion bundle.
+37. [x] Check the built HTML (`dist/index.html`): all personal content is present as text, and the only JS is the Motion bundle.
 38. [ ] The redirect checks pass on the `*.netlify.app` URL (§12.5 B, step 6).
 
 ### Phase 10: Go live

@@ -1,0 +1,43 @@
+---
+import { formatYears, isCurrent } from '@/lib/format';
+import type { Job } from '@/types/site';
+
+interface Props {
+  job: Job;
+}
+
+const { job } = Astro.props;
+---
+<article class="job">
+  <div class="job__years label muted">{formatYears(job)}</div>
+  <div class="job__body stack" style={{ '--stack-gap': '6px' }}>
+    <div class="job__title">
+      <h3 class="display job__org">{job.org}</h3>
+      {isCurrent(job) && <span class="job__badge label label--caps">Now</span>}
+    </div>
+    <div class="job__role">{job.role}</div>
+    <p class="job__blurb muted">{job.blurb}</p>
+  </div>
+</article>
+
+<style>
+  .job {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 40px;
+    padding: 28px 0; border-top: var(--border-width) solid var(--line);
+  }
+  .job__years { flex: 0 0 170px; }
+  .job__body { flex: 1 1 420px; min-width: 0; }
+  .job__title { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+  .job__org { font-size: var(--fs-job-org); line-height: 1; overflow-wrap: anywhere; }
+  .job__badge {
+    font-size: var(--fs-label-sm); letter-spacing: .1em;
+    padding: 4px 10px; border-radius: 6px;
+    background: var(--accent); color: var(--bg);
+  }
+  .job__role { font-weight: 700; }
+  .job__blurb { margin: 0; max-width: 660px; }
+
+  @media (max-width: 600px) {
+    .job { padding: 22px 0; }
+  }
+</style>

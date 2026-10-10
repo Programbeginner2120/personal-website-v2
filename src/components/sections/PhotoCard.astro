@@ -1,0 +1,39 @@
+---
+import { Image } from 'astro:assets';
+import Placeholder from '@/components/ui/Placeholder.astro';
+import { framingStyle } from '@/lib/framing';
+import type { Photo } from '@/types/site';
+
+interface Props {
+  photo: Photo;
+}
+
+const { photo } = Astro.props;
+---
+<figure class="photo">
+  {photo.image ? (
+    <div class="photo__frame">
+      <Image
+        class="framed-img"
+        src={photo.image}
+        alt={photo.alt}
+        widths={[400, 800, 1200]}
+        sizes="(min-width: 1100px) 25vw, (min-width: 720px) 50vw, 100vw"
+        style={framingStyle(photo)}
+      />
+    </div>
+  ) : (
+    <Placeholder class="photo__frame">Photo: {photo.caption}</Placeholder>
+  )}
+  <figcaption class="display">{photo.caption}</figcaption>
+</figure>
+
+<style>
+  .photo { min-width: 0; margin: 0; background: var(--surface); border-radius: var(--radius-md); overflow: hidden; }
+  /* The frame sets the shape and clips the photo, so zoom can't spill over the caption */
+  .photo__frame {
+    aspect-ratio: 4 / 3; overflow: hidden;
+    border: 0; border-bottom: var(--border-width) dashed var(--line);
+  }
+  figcaption { padding: 18px 22px; font-size: 28px; line-height: 1; }
+</style>

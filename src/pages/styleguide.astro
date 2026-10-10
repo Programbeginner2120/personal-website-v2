@@ -1,0 +1,83 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/ui/Button.astro';
+import ChipList from '@/components/ui/ChipList.astro';
+import Placeholder from '@/components/ui/Placeholder.astro';
+import JobCard from '@/components/sections/JobCard.astro';
+import type { Theme } from '@/types/site';
+
+// Each palette is shown side by side by scoping data-theme to its section.
+const themes: Theme[] = ['green', 'blue'];
+const colours = ['bg', 'surface', 'fg', 'muted', 'accent', 'line', 'felt', 'rail'] as const;
+const typeScale = ['fs-hero', 'fs-contact', 'fs-h2', 'fs-job-org', 'fs-lead', 'fs-intro', 'fs-base'] as const;
+---
+<BaseLayout title="Style guide" noindex>
+  <main id="main" class="wrap stack guide">
+    <header class="stack" style={{ '--stack-gap': '12px' }}>
+      <p class="label label--caps muted">Design system</p>
+      <h1 class="display h2">Style guide</h1>
+      <p class="muted">Tokens live in <code>src/styles/tokens.css</code>; utilities in <code>src/styles/global.css</code>.</p>
+    </header>
+
+    {themes.map((theme) => (
+      <section class="stack" data-theme={theme}>
+        <h2 class="label label--caps">Colour tokens: {theme}</h2>
+        <ul class="swatches">
+          {colours.map((name) => (
+            <li class="swatch">
+              <span class="swatch__chip" style={{ background: `var(--${name})` }}></span>
+              <code>--{name}</code>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <section class="stack">
+      <h2 class="label label--caps">Type scale</h2>
+      {typeScale.map((token) => (
+        <p class="display type-sample" style={{ fontSize: `var(--${token})` }}>{token}</p>
+      ))}
+      <p>Body: Manrope, fluid 16–18px / 1.6. The quick brown fox jumps over the lazy dog.</p>
+      <p class="label">Label: JetBrains Mono 14 / 700</p>
+      <p class="label label--caps">Label caps: JetBrains Mono 14 / 700</p>
+    </section>
+
+    <section class="stack">
+      <h2 class="label label--caps">Buttons</h2>
+      <div class="cluster">
+        <Button href="#">Default</Button>
+        <Button href="#" variant="primary">Primary</Button>
+        <Button href="#" variant="solid">Solid</Button>
+      </div>
+    </section>
+
+    <section class="stack">
+      <h2 class="label label--caps">Chips & placeholder</h2>
+      <ChipList items={['Java', 'TypeScript', 'AWS']} />
+      <Placeholder style={{ height: '160px' }}>Photo: example</Placeholder>
+    </section>
+
+    <section class="stack">
+      <h2 class="label label--caps">Job card</h2>
+      <div>
+        <JobCard job={{ org: 'Example Corp', role: 'Engineer', start: 2025, blurb: 'A current role shows the "Now" badge.' }} />
+        <JobCard job={{ org: 'Previous Ltd', role: 'Engineer', start: 2020, end: 2024, blurb: 'A finished role shows its end year.' }} />
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .guide { --stack-gap: 64px; padding-block: 64px; }
+  .guide p { margin: 0; }
+  .swatches {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px;
+    list-style: none; padding: 16px; margin: 0;
+    background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md);
+  }
+  .swatch { display: flex; flex-direction: column; gap: 8px; color: var(--fg); }
+  .swatch__chip { aspect-ratio: 3 / 2; border-radius: var(--radius-sm); border: 1px solid var(--line); }
+  .type-sample { overflow-wrap: anywhere; }
+  code { font-family: var(--font-mono); font-size: .9em; }
+</style>

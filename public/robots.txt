@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://matthewrkilleen.com/sitemap-index.xml
