@@ -1450,6 +1450,8 @@ Sitemap: https://matthewrkilleen.com/sitemap-index.xml
 
 ### 12.5 Cutover runbook
 
+> **Superseded by [Plan 02: Host v2 on Netlify](./2026-10-10_02_netlify-hosting-plan.md)**, which has the up-to-date, step-by-step version. It reflects the résumé rename, the generated icons, and tested check scripts. This section is kept for history.
+
 **A. Set up the v2 repo and site (any time, no impact on v1)**
 
 1. On GitHub, create an **empty** repo `Programbeginner2120/personal-website-v2`, with no README, so the first push doesn't conflict.
