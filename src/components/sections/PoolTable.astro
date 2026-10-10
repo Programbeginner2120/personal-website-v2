@@ -1,0 +1,103 @@
+---
+// A decorative break shot. Positions are part of the drawing (presentation),
+// not personal content, so they live here rather than in src/data/.
+interface Ball {
+  /** Matches the .ball--{id} animation class. */
+  id: 'cue' | '1' | '2' | '3' | '4' | 'eight' | '6';
+  left: string;   // % of the felt
+  top: string;
+  colour?: string; // the eight ball is drawn by CSS instead
+}
+
+interface Pocket {
+  left: string;
+  top: string;
+}
+
+// The rack apex sits at 62% across.
+const balls: Ball[] = [
+  { id: 'cue',   left: '22.75%', top: '45.5%', colour: '#F6F4EE' },
+  { id: '1',     left: '59.75%', top: '45.5%', colour: '#F4C542' },
+  { id: '2',     left: '63.65%', top: '41%',   colour: '#2F5BEA' },
+  { id: '3',     left: '63.65%', top: '50%',   colour: '#E5484D' },
+  { id: '4',     left: '67.55%', top: '36.5%', colour: '#7E4FD0' },
+  { id: 'eight', left: '67.55%', top: '45.5%' },
+  { id: '6',     left: '67.55%', top: '54.5%', colour: '#FF7A1A' },
+];
+
+const pockets: Pocket[] = [
+  { left: '0',   top: '0' },    { left: '50%', top: '-1%' },  { left: '100%', top: '0' },
+  { left: '0',   top: '100%' }, { left: '50%', top: '101%' }, { left: '100%', top: '100%' },
+];
+---
+<div class="pool" data-pool aria-hidden="true">
+  <div class="pool__felt">
+    {pockets.map(({ left, top }) => <span class="pool__pocket" style={{ left, top }}></span>)}
+    <span class="pool__headstring"></span>
+    <span class="pool__cue"></span>
+    {balls.map(({ id, left, top, colour }) => (
+      <span class={`ball ball--${id}`} style={{ left, top, '--c': colour }}></span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .pool { background: var(--rail); border-radius: clamp(14px, 2.5vw, 28px); padding: clamp(12px, 3%, 32px); }
+  .pool__felt { position: relative; aspect-ratio: 2 / 1; background: var(--felt); border-radius: 6px; }
+  .pool__pocket { position: absolute; width: 5.5%; aspect-ratio: 1; border-radius: 50%; background: #030504; transform: translate(-50%, -50%); }
+  .pool__headstring { position: absolute; left: 25%; top: 6%; bottom: 6%; border-left: 1px solid rgba(255, 255, 255, .14); }
+  .pool__cue {
+    position: absolute; left: -18%; top: 48%; width: 39%; height: 4%; border-radius: 999px;
+    background: linear-gradient(90deg, #2A1D14 0 52%, #F0EDE6 53% 55%, #C99E6B 56% 96%, #3B6FD9 96%);
+  }
+  .ball {
+    position: absolute; width: 4.5%; aspect-ratio: 1; border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .35);
+    background: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, .6) 0 11%, transparent 12%), var(--c);
+  }
+  .ball--eight {
+    background:
+      radial-gradient(circle at 34% 30%, rgba(255, 255, 255, .5) 0 10%, transparent 11%),
+      radial-gradient(circle, #F6F4EE 0 22%, transparent 23%),
+      #111318;
+  }
+
+  /* The break shot. One 6s loop; each ball has its own path. */
+  .pool__cue   { animation: pb-cue 6s linear infinite; }
+  .ball--cue   { animation: pb-white 6s linear infinite; }
+  .ball--1     { animation: pb-b1 6s linear infinite; }
+  .ball--2     { animation: pb-b2 6s linear infinite; }
+  .ball--3     { animation: pb-b3 6s linear infinite; }
+  .ball--4     { animation: pb-b4 6s linear infinite; }
+  .ball--eight { animation: pb-b5 6s linear infinite; }
+  .ball--6     { animation: pb-b6 6s linear infinite; }
+  /* Paused until the script below adds .is-playing */
+  .pool:not(.is-playing) * { animation-play-state: paused; }
+
+  @keyframes pb-cue { 0% { transform: translateX(0); opacity: 0; } 6% { transform: translateX(0); opacity: 1; } 28% { transform: translateX(-20%); animation-timing-function: cubic-bezier(.6,0,1,.6); } 34%, 40% { transform: translateX(5%); opacity: 1; } 55%, 100% { transform: translateX(-12%); opacity: 0; } }
+  @keyframes pb-white { 0% { transform: translate(0,0); opacity: 0; } 6% { transform: translate(0,0); opacity: 1; } 34% { transform: translate(0,0); animation-timing-function: linear; } 39% { transform: translate(722%,0); animation-timing-function: cubic-bezier(.1,.6,.2,1); } 55%, 90% { transform: translate(640%,80%); opacity: 1; } 96%, 100% { transform: translate(640%,80%); opacity: 0; } }
+  @keyframes pb-b1 { 0% { transform: translate(0,0); opacity: 0; } 6% { opacity: 1; } 39% { transform: translate(0,0); animation-timing-function: cubic-bezier(.1,.7,.2,1); } 62%, 90% { transform: translate(300%,400%); opacity: 1; } 96%, 100% { transform: translate(300%,400%); opacity: 0; } }
+  @keyframes pb-b2 { 0% { transform: translate(0,0); opacity: 0; } 6% { opacity: 1; } 39% { transform: translate(0,0); animation-timing-function: cubic-bezier(.1,.7,.2,1); } 62%, 90% { transform: translate(-400%,-400%); opacity: 1; } 96%, 100% { transform: translate(-400%,-400%); opacity: 0; } }
+  @keyframes pb-b3 { 0% { transform: translate(0,0); opacity: 0; } 6% { opacity: 1; } 39% { transform: translate(0,0); animation-timing-function: cubic-bezier(.2,.5,.4,1); } 58% { transform: translate(736%,505%) scale(1); opacity: 1; } 63%, 100% { transform: translate(736%,505%) scale(.4); opacity: 0; } }
+  @keyframes pb-b4 { 0% { transform: translate(0,0); opacity: 0; } 6% { opacity: 1; } 39% { transform: translate(0,0); animation-timing-function: cubic-bezier(.1,.7,.2,1); } 62%, 90% { transform: translate(100%,-380%); opacity: 1; } 96%, 100% { transform: translate(100%,-380%); opacity: 0; } }
+  @keyframes pb-b5 { 0% { transform: translate(0,0); opacity: 0; } 6% { opacity: 1; } 39% { transform: translate(0,0); animation-timing-function: cubic-bezier(.1,.7,.2,1); } 62%, 90% { transform: translate(580%,-100%); opacity: 1; } 96%, 100% { transform: translate(580%,-100%); opacity: 0; } }
+  @keyframes pb-b6 { 0% { transform: translate(0,0); opacity: 0; } 6% { opacity: 1; } 39% { transform: translate(0,0); animation-timing-function: cubic-bezier(.1,.7,.2,1); } 62%, 90% { transform: translate(-250%,380%); opacity: 1; } 96%, 100% { transform: translate(-250%,380%); opacity: 0; } }
+</style>
+
+<script>
+  import { inView } from 'motion';
+
+  const pool = document.querySelector<HTMLElement>('[data-pool]');
+
+  if (pool) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      pool.classList.add('is-playing'); // CSS turns the animation off anyway
+    } else {
+      // Play the break shot only while at least half the table is on screen.
+      inView(pool, () => {
+        pool.classList.add('is-playing');
+        return () => pool.classList.remove('is-playing');
+      }, { amount: 0.5 });
+    }
+  }
+</script>

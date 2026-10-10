@@ -1,11 +1,27 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteHeader from '@/components/sections/SiteHeader.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Ticker from '@/components/sections/Ticker.astro';
+import About from '@/components/sections/About.astro';
+import Experience from '@/components/sections/Experience.astro';
+import OffTheClock from '@/components/sections/OffTheClock.astro';
+import Contact from '@/components/sections/Contact.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { site } from '@/data/site';
+import { hero, about, ticker } from '@/data/profile';
+import { jobs } from '@/data/experience';
+import { life } from '@/data/life';
+import { contact } from '@/data/contact';
 ---
-
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout>
+  <SiteHeader domain={site.domain} nav={site.nav} />
+  <main id="main">
+    <Hero content={hero} />
+    <Ticker items={ticker} />
+    <About content={about} />
+    <Experience jobs={jobs} />
+    <OffTheClock content={life} />
+    <Contact content={contact} name={site.name} domain={site.domain} />
+  </main>
+</BaseLayout>

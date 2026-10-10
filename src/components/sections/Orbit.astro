@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+import Placeholder from '@/components/ui/Placeholder.astro';
+import { framingStyle } from '@/lib/framing';
+import type { Photo } from '@/types/site';
+
+interface Props {
+  portrait: Photo;
+}
+
+const { portrait } = Astro.props;
+---
+<div class="orbit">
+  <div class="orbit__box">
+    <div class="orbit__ring" aria-hidden="true"></div>
+    {portrait.image ? (
+      <div class="orbit__photo">
+        <Image
+          class="framed-img"
+          src={portrait.image}
+          alt={portrait.alt}
+          widths={[280, 560, 840]}
+          sizes="(min-width: 900px) 280px, 70vw"
+          loading="eager"
+          style={framingStyle(portrait)}
+        />
+      </div>
+    ) : (
+      <Placeholder class="orbit__photo">Photo: {portrait.caption}</Placeholder>
+    )}
+    <div class="orbit__path" aria-hidden="true">
+      <svg class="orbit__rocket" viewBox="0 0 120 50" width="72" height="30">
+        <g class="orbit__flame"><path d="M22 18 L0 25 L22 32 Z" fill="var(--accent)" /></g>
+        <path d="M22 14 L84 14 C100 14 114 20 118 25 C114 30 100 36 84 36 L22 36 Z" fill="var(--fg)" />
+        <path d="M30 14 L18 2 L44 14 Z" fill="var(--accent)" />
+        <path d="M30 36 L18 48 L44 36 Z" fill="var(--accent)" />
+        <circle cx="86" cy="25" r="6" fill="var(--bg)" stroke="var(--accent)" stroke-width="3" />
+      </svg>
+    </div>
+  </div>
+</div>
+
+<style>
+  .orbit { flex: 1 1 300px; display: flex; justify-content: center; }
+  .orbit__box { position: relative; width: min(340px, 72vw); aspect-ratio: 1; }
+  .orbit__ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    border: var(--border-width) dashed var(--line);
+    animation: spin 50s linear infinite reverse;
+  }
+  .orbit__photo {
+    position: absolute; inset: 14%;
+    width: 72%; height: 72%;
+    border-radius: 50%; background: var(--surface);
+    overflow: hidden; /* the round frame clips the photo, so zoom can't spill outside it */
+  }
+  .orbit__path { position: absolute; inset: 0; animation: spin 14s linear infinite; }
+  .orbit__rocket { position: absolute; top: -15px; left: calc(50% - 36px); }
+  .orbit__flame {
+    animation: flicker .08s ease-in-out infinite alternate;
+    transform-origin: 100% 50%; transform-box: fill-box;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes flicker { from { transform: scaleX(.75); } to { transform: scaleX(1.2); } }
+</style>

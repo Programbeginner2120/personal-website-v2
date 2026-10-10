@@ -1,0 +1,27 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SiteHeader from '@/components/sections/SiteHeader.astro';
+import Button from '@/components/ui/Button.astro';
+import { site } from '@/data/site';
+
+// Section links on this page must point back at the homepage.
+const nav = site.nav.map((link) => ({ ...link, href: `/${link.href}` }));
+---
+<BaseLayout title="Not found" noindex>
+  <SiteHeader domain={site.domain} nav={nav} />
+  <main id="main" class="wrap section stack lost">
+    <p class="label label--caps muted">Error 404</p>
+    <h1 class="display lost__title">Scratch.</h1>
+    <p class="muted lost__text">That page isn't on the table any more.</p>
+    <div class="cluster">
+      <Button href="/" variant="primary">Back to the homepage</Button>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .lost { padding-bottom: var(--section-gap); }
+  .lost p { margin: 0; }
+  .lost__title { font-size: var(--fs-contact); color: var(--accent); }
+  .lost__text { font-size: var(--fs-intro); max-width: 480px; }
+</style>

@@ -1,0 +1,34 @@
+---
+interface Props {
+  items: string[];
+  separator?: string;
+  /** Seconds for one full loop. */
+  duration?: number;
+}
+
+const { items, separator = '///', duration = 30 } = Astro.props;
+
+// The track is rendered twice and slides by -50%, so the loop is seamless.
+const track = [...items, ...items];
+---
+<div class="ticker label label--caps" aria-hidden="true">
+  <div class="ticker__track" style={{ '--duration': `${duration}s` }}>
+    {track.map((item) => (
+      <span>{item} <span class="ticker__sep">{separator}</span></span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .ticker {
+    border-block: var(--border-width) solid var(--fg);
+    overflow: hidden; white-space: nowrap; padding: 14px 0;
+    font-size: var(--fs-label-lg);
+  }
+  .ticker__track {
+    display: inline-flex; gap: 40px; padding-right: 40px;
+    animation: marquee var(--duration) linear infinite;
+  }
+  .ticker__sep { color: var(--accent); }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+</style>

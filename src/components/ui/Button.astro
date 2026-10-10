@@ -1,0 +1,19 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { ButtonVariant } from '@/types/site';
+
+interface Props extends HTMLAttributes<'a'> {
+  href: string;
+  variant?: ButtonVariant | undefined;
+  /** Open in a new tab (external sites, PDFs). */
+  external?: boolean | undefined;
+}
+
+const { variant = 'default', external = false, class: className, ...rest } = Astro.props;
+const newTab = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+<a
+  class:list={['btn', { [`btn--${variant}`]: variant !== 'default' }, className]}
+  {...newTab}
+  {...rest}
+><slot /></a>
