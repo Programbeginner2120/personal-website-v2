@@ -31,7 +31,13 @@
 
 [[redirects]]
   from = "/assets/current-resume-matthew-killeen.pdf"
-  to = "/resume.pdf"
+  to = "/Matthew_Killeen_Resume.pdf"
+  status = 301
+
+# Browsers request /favicon.ico on their own; serve the portrait icon instead.
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/favicon.png"
   status = 301
 
 # ---------- Caching ----------
