@@ -16,11 +16,11 @@ const { content, name, domain } = Astro.props;
   <div class="contact__card stack" style={{ '--stack-gap': '28px' }}>
     <h2 class="display contact__title">{content.heading}</h2>
     <div class="cluster">
-      {content.links.map(({ label, href, variant, external }) => {
+      {content.links.map(({ label, ...link }) => {
         // On narrow screens, let an email address wrap before the "@" rather than mid-word.
         const [user, domain] = label.split('@');
         return (
-          <Button href={href} variant={variant} external={external}>
+          <Button {...link}>
             {domain ? <>{user}<wbr />@{domain}</> : label}
           </Button>
         );

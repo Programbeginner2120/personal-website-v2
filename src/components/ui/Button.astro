@@ -5,8 +5,10 @@ import type { ButtonVariant } from '@/types/site';
 interface Props extends HTMLAttributes<'a'> {
   href: string;
   variant?: ButtonVariant | undefined;
-  /** Open in a new tab (external sites, PDFs). */
+  /** Open in a new tab (external sites). */
   external?: boolean | undefined;
+  /** Save the file under this name instead of opening it (same-site files only). */
+  download?: string | undefined;
 }
 
 const { variant = 'default', external = false, class: className, ...rest } = Astro.props;

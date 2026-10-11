@@ -18,8 +18,13 @@ export type ButtonVariant = 'default' | 'primary' | 'solid';
 
 export interface ButtonLink extends Link {
   variant?: ButtonVariant;
-  /** Open in a new tab (external sites, PDFs). */
+  /** Open in a new tab (external sites). */
   external?: boolean;
+  /**
+   * Download the file instead of opening it. The value is the filename the
+   * visitor's browser saves it as. Only works for files on this site (e.g. in public/).
+   */
+  download?: string;
 }
 
 export interface SiteMeta {

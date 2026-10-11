@@ -7,8 +7,9 @@ export const hero = {
   intro: "Software engineer at JPMorgan Chase, building for wealth management. Pool player and dog lover.",
   actions: [
     { label: 'See my work', href: '#experience', variant: 'primary' },
-    // Place the PDF at public/Matthew_Killeen_Resume.pdf
-    { label: 'Résumé', href: '/Matthew_Killeen_Resume.pdf', external: true },
+    // The PDF lives at public/Matthew_Killeen_Resume.pdf. `download` saves it
+    // under that filename instead of opening it in the browser.
+    { label: 'Résumé', href: '/Matthew_Killeen_Resume.pdf', download: 'Matthew_Killeen_Resume.pdf' },
   ],
   portrait: {
     image: portrait,

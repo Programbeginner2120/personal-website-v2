@@ -20,9 +20,7 @@ const { nameLines, intro, actions, portrait } = Astro.props.content;
     </h1>
     <p class="hero__intro muted" data-reveal>{intro}</p>
     <div class="cluster" data-reveal>
-      {actions.map(({ label, href, variant, external }) => (
-        <Button href={href} variant={variant} external={external}>{label}</Button>
-      ))}
+      {actions.map(({ label, ...link }) => <Button {...link}>{label}</Button>)}
     </div>
   </div>
   <Orbit portrait={portrait} />
